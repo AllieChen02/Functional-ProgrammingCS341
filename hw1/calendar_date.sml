@@ -112,4 +112,56 @@ fun cumulative_sum(nums : int list) =
 
         
 
+(* Remove duplicates *)
+fun remove_duplicate(nums : int list) = 
+    if null nums
+    then []
+    else
+        let
+          fun has_contains(target : int, nums : int list) = 
+            if null nums
+            then false
+            else target = hd nums orelse has_contains(target, tl nums)
+        in
+          if has_contains(hd nums, tl nums)
+          then remove_duplicate(tl nums)
+          else hd nums :: remove_duplicate(tl nums)
+        end
 
+fun number_in_months_challenge(dates_list : (int * int * int) list, months : int list) = 
+    let
+      val months = remove_duplicate(months)
+    in
+      number_in_months(dates_list, months)
+    end
+
+fun dates_in_months_challenge(dates_list : (int * int * int) list,  months : int list) = 
+    let
+      val months = remove_duplicate(months)
+    in
+      dates_in_months(dates_list, months)
+    end
+
+
+fun reasonable_date(date : (int * int * int)) = 
+    let
+        val days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        val day = #1 date
+        val month = #2 date
+        val year = #3 date
+
+        fun is_leap(year : int) = 
+            year mod 400 = 0 orelse (year mod 4 = 0 andalso year mod 100 <> 0) 
+
+        fun days_of_month(month : int, days : int list) = 
+            if month = 1
+            then hd days
+            else days_of_month(month - 1, tl days)
+    in
+
+       year > 0 andalso (month >= 1 andalso month <= 12) andalso (
+           if month = 2 andalso is_leap(year)
+           then day >=0 andalso day <=29
+           else day >=0 andalso day <= days_of_month(month, days)
+           )
+    end
