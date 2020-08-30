@@ -110,7 +110,6 @@ fun cumulative_sum(nums : int list) =
           helper(0, nums)
         end
 
-fun number_in_months_challenge()
         
 
 
